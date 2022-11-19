@@ -16,6 +16,14 @@
 #
 # Makefile.
 
+ifeq ($(PREFIX),)
+    PREFIX := /usr/local
+endif
+EXEC_PREFIX = ${PREFIX}
+BINDIR = ${EXEC_PREFIX}/bin
+
+BINARIES := tcp_rr tcp_stream tcp_crr udp_rr udp_stream psp_stream psp_crr psp_rr
+
 all: binaries
 
 CFLAGS = -std=c99 -Wall -O3 -g -D_GNU_SOURCE -DNO_LIBNUMA
@@ -88,7 +96,14 @@ psp_crr: $(psp_crr-objs)
 psp_rr: $(psp_rr-objs)
 	$(CC) $(LDFLAGS) -o $@ $^ $(ext-libs)
 
-binaries: tcp_rr tcp_stream tcp_crr udp_rr udp_stream psp_stream psp_crr psp_rr
+binaries: $(BINARIES)
+
+install: binaries
+	install -d $(DESTDIR)$(BINDIR)
+	install -s -m 755 -o root -g root $(BINARIES) $(DESTDIR)$(BINDIR)
+
+uninstall:
+	cd $(DESTDIR)$(BINDIR) && rm -f $(BINARIES)
 
 clean:
-	rm -f *.o tcp_rr tcp_stream tcp_crr udp_rr udp_stream psp_stream psp_crr psp_rr
+	rm -f *.o $(BINARIES)
