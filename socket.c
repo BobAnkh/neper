@@ -33,6 +33,10 @@
 #define TCP_FASTOPEN_CONNECT 30
 #endif
 
+#ifndef TCP_CONGESTION
+#define TCP_CONGESTION 13 
+#endif
+
 /*
  * Set sockopts that has to be set before the socket is established and
  * are common to all data sockets.
@@ -318,6 +322,12 @@ int socket_connect_one(struct thread *t, int flags)
                 int enable = 1;
                 setsockopt(s, IPPROTO_TCP, TCP_FASTOPEN_CONNECT, &enable,
                            sizeof(enable));
+        }
+
+        if (t->ai_socktype == SOCK_STREAM) {
+                if (setsockopt(s, IPPROTO_TCP, TCP_CONGESTION, t->opts->cc, sizeof(t->opts->cc))) {
+                        LOG_FATAL(t->cb, "unknown congestion control algorithm: %s", t->opts->cc);
+                }
         }
 
         socket_init_not_established(t, s);

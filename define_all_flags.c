@@ -65,6 +65,7 @@ struct flags_parser *add_flags_tcp(struct flags_parser *fp)
         /* Define flags common to all TCP main programs */
         DEFINE_FLAG(fp, int,          num_ports,     1,        0,  "Number of server data ports");
         DEFINE_FLAG(fp, bool,         tcp_fastopen,  false,   'X', "Enable TCP fastopen");
+        DEFINE_FLAG(fp, const char *, cc,            "cubic",  0,  "Choose congestion control for tcp");
 #ifndef NO_LIBNUMA
         DEFINE_FLAG(fp, bool,         pin_numa,       false,  'N', "Pin threads to CPU cores");
 #endif
