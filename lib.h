@@ -103,6 +103,7 @@ struct options {
         const char *all_samples;
         const char secret[32]; /* includes test name */
         bool async_connect;
+        const char *cc;
 
         /* tcp_stream */
         bool enable_read;

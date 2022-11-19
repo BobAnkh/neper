@@ -2,6 +2,8 @@
 
 neper is a Linux networking performance tool.
 
+> This fork adds TCP congestion control option.
+
 * Support multithreads and multi-flows out of the box.
 * Generate workload with epoll.
 * Collect statistics in a more accurate way.
@@ -281,6 +283,7 @@ available in: [google/psp](https://github.com/google/psp).
 
     max_pacing_rate
     listen_backlog
+    cc
 
 ### `tcp_rr` and `tcp_crr` options
 
